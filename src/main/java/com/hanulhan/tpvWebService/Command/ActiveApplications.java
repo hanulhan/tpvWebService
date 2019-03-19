@@ -16,41 +16,28 @@ import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "PollingFrequency",
-    "TVUniqueID"
+    "ApplicationName"
 })
 
 /**
  *
- * @author UHansen
+ * @author uhansen
  */
-public class WebServiceParameters {
+public class ActiveApplications {
 
-    @JsonProperty("PollingFrequency")
-    private Integer pollingFrequency;
-    @JsonProperty("TVUniqueID")
-    private String tVUniqueID;
+    @JsonProperty("ApplicationName")
+    private String applicationName;
     @JsonIgnore
     private final Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-    @JsonProperty("PollingFrequency")
-    public Integer getPollingFrequency() {
-        return pollingFrequency;
+    @JsonProperty("ApplicationName")
+    public String getApplicationName() {
+        return applicationName;
     }
 
-    @JsonProperty("PollingFrequency")
-    public void setPollingFrequency(Integer pollingFrequency) {
-        this.pollingFrequency = pollingFrequency;
-    }
-
-    @JsonProperty("TVUniqueID")
-    public String getTVUniqueID() {
-        return tVUniqueID;
-    }
-
-    @JsonProperty("TVUniqueID")
-    public void setTVUniqueID(String tVUniqueID) {
-        this.tVUniqueID = tVUniqueID;
+    @JsonProperty("ApplicationName")
+    public void setApplicationName(String applicationName) {
+        this.applicationName = applicationName;
     }
 
     @JsonAnyGetter
@@ -65,8 +52,8 @@ public class WebServiceParameters {
 
     @Override
     public String toString() {
-        return "WebServiceParameters{" + "pollingFrequency=" + pollingFrequency + ", tVUniqueID=" + tVUniqueID + '}';
+        return "\n\t\tApplicationName=" + applicationName;
     }
-
-
+    
+    
 }

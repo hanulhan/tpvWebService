@@ -5,43 +5,29 @@
  */
 package com.hanulhan.tpvWebService.Command;
 
+/**
+ *
+ * @author uhansen
+ */
+import java.util.HashMap;
+import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import java.util.HashMap;
-import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "PollingFrequency",
     "TVUniqueID"
 })
+public class WebListeningServiceParameters {
 
-/**
- *
- * @author UHansen
- */
-public class WebServiceParameters {
-
-    @JsonProperty("PollingFrequency")
-    private Integer pollingFrequency;
     @JsonProperty("TVUniqueID")
     private String tVUniqueID;
     @JsonIgnore
     private final Map<String, Object> additionalProperties = new HashMap<String, Object>();
-
-    @JsonProperty("PollingFrequency")
-    public Integer getPollingFrequency() {
-        return pollingFrequency;
-    }
-
-    @JsonProperty("PollingFrequency")
-    public void setPollingFrequency(Integer pollingFrequency) {
-        this.pollingFrequency = pollingFrequency;
-    }
 
     @JsonProperty("TVUniqueID")
     public String getTVUniqueID() {
@@ -62,11 +48,5 @@ public class WebServiceParameters {
     public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
-
-    @Override
-    public String toString() {
-        return "WebServiceParameters{" + "pollingFrequency=" + pollingFrequency + ", tVUniqueID=" + tVUniqueID + '}';
-    }
-
 
 }

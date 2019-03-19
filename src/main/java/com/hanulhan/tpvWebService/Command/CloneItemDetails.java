@@ -7,50 +7,52 @@ package com.hanulhan.tpvWebService.Command;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import java.util.HashMap;
 import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "PollingFrequency",
-    "TVUniqueID"
+    "CloneItemName",
+    "CloneItemVersionNo"
 })
 
 /**
  *
- * @author UHansen
+ * @author uhansen
  */
-public class WebServiceParameters {
+public class CloneItemDetails {
 
-    @JsonProperty("PollingFrequency")
-    private Integer pollingFrequency;
-    @JsonProperty("TVUniqueID")
-    private String tVUniqueID;
+    @JsonProperty("CloneItemName")
+    private String cloneItemName;
+    @JsonProperty("CloneItemVersionNo")
+    private String cloneItemVersionNo;
     @JsonIgnore
     private final Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-    @JsonProperty("PollingFrequency")
-    public Integer getPollingFrequency() {
-        return pollingFrequency;
+    @JsonGetter("CloneItemName")
+    public String getCloneItemName() {
+        return cloneItemName;
     }
 
-    @JsonProperty("PollingFrequency")
-    public void setPollingFrequency(Integer pollingFrequency) {
-        this.pollingFrequency = pollingFrequency;
+    @JsonSetter("CloneItemName")
+    public void setCloneItemName(String cloneItemName) {
+        this.cloneItemName = cloneItemName;
     }
 
-    @JsonProperty("TVUniqueID")
-    public String getTVUniqueID() {
-        return tVUniqueID;
+    @JsonGetter("CloneItemVersionNo")
+    public String getCloneItemVersionNo() {
+        return cloneItemVersionNo;
     }
 
-    @JsonProperty("TVUniqueID")
-    public void setTVUniqueID(String tVUniqueID) {
-        this.tVUniqueID = tVUniqueID;
+    @JsonSetter("CloneItemVersionNo")
+    public void setCloneItemVersionNo(String cloneItemVersionNo) {
+        this.cloneItemVersionNo = cloneItemVersionNo;
     }
 
     @JsonAnyGetter
@@ -65,8 +67,7 @@ public class WebServiceParameters {
 
     @Override
     public String toString() {
-        return "WebServiceParameters{" + "pollingFrequency=" + pollingFrequency + ", tVUniqueID=" + tVUniqueID + '}';
+        String myValue = "\n\t\t\t{CloneItemName: " + this.cloneItemName + ", CloneItemVersionNo: " + this.cloneItemVersionNo + "}\n";
+        return myValue;
     }
-
-
 }

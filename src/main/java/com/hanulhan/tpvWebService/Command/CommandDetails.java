@@ -5,37 +5,160 @@
  */
 package com.hanulhan.tpvWebService.Command;
 
-import java.util.ArrayList;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.JsonSetter;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
  * @author UHansen
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonPropertyOrder({
+    "ActiveApplications",
+    "WebServiceParameters",
+    "WebListeningServiceParameters",
+    "TVDiscoveryParameters",
+    "CloneToServerParameters",
+    "IPCloneParameters"})
 public class CommandDetails {
 
-    private ArrayList< Object> ActiveApplications;
-    private WebServiceParameters webServiceParametersObject;
+    @JsonProperty("WebServiceParameters")
+    private WebServiceParameters webServiceParameters;
 
-    public CommandDetails() {
-        super();
+    @JsonProperty("WebListeningServiceParameters")
+    private WebListeningServiceParameters webListeningServiceParameters;
+
+    @JsonProperty("ActiveApplications")
+    private List<ActiveApplications> activeApplications = null;
+
+    @JsonProperty("TVDiscoveryParameters")
+    private TVDiscoveryParameters tVDiscoveryParameters;
+
+    @JsonProperty("SystemStatusParameters")
+    SystemStatusParameters systemStatusParameters;
+
+    @JsonProperty("CloneToServerParameters")
+    private CloneToServerParameters cloneToServerParameters;
+
+    @JsonProperty("IPCloneParameters")
+    private IPCloneParameters iPCloneParameters;
+
+    @JsonIgnore
+    private final Map<String, Object> additionalProperties = new HashMap<String, Object>();
+
+    @JsonGetter("ActiveApplications")
+    public List<ActiveApplications> getActiveApplications() {
+        return activeApplications;
     }
 
-    public ArrayList<Object> getActiveApplications() {
-        return ActiveApplications;
+    @JsonSetter("ActiveApplications")
+    public void setActiveApplications(List<ActiveApplications> activeApplications) {
+        this.activeApplications = activeApplications;
     }
 
-    public void setActiveApplications(ArrayList<Object> ActiveApplications) {
-        this.ActiveApplications = ActiveApplications;
+    @JsonGetter("WebServiceParameters")
+    public WebServiceParameters getWebServiceParameters() {
+        return webServiceParameters;
     }
 
-    public WebServiceParameters getWebServiceParametersObject() {
-        return webServiceParametersObject;
+    @JsonSetter("WebServiceParameters")
+    public void setWebServiceParameters(WebServiceParameters webServiceParameters) {
+        this.webServiceParameters = webServiceParameters;
     }
 
-    public void setWebServiceParametersObject(WebServiceParameters webServiceParametersObject) {
-        this.webServiceParametersObject = webServiceParametersObject;
+    @JsonGetter("TVDiscoveryParameters")
+    public TVDiscoveryParameters gettVDiscoveryParameters() {
+        return tVDiscoveryParameters;
     }
-    
-    
+
+    @JsonSetter("TVDiscoveryParameters")
+    public void settVDiscoveryParameters(TVDiscoveryParameters tVDiscoveryParameters) {
+        this.tVDiscoveryParameters = tVDiscoveryParameters;
+    }
+
+    @JsonGetter("SystemStatusParameters")
+    public SystemStatusParameters getSystemStatusParameters() {
+        return systemStatusParameters;
+    }
+
+    @JsonSetter("SystemStatusParameters")
+    public void setSystemStatusParameters(SystemStatusParameters systemStatusParameters) {
+        this.systemStatusParameters = systemStatusParameters;
+    }
+
+    @JsonGetter("CloneToServerParameters")
+    public CloneToServerParameters getCloneToServerParameters() {
+        return cloneToServerParameters;
+    }
+
+    @JsonSetter("CloneToServerParameters")
+    public void setCloneToServerParameters(CloneToServerParameters cloneToServerParameters) {
+        this.cloneToServerParameters = cloneToServerParameters;
+    }
+
+    @JsonGetter("getiPCloneParameters")
+    public IPCloneParameters getiPCloneParameters() {
+        return iPCloneParameters;
+    }
+
+    @JsonSetter("getiPCloneParameters")
+    public void setiPCloneParameters(IPCloneParameters iPCloneParameters) {
+        this.iPCloneParameters = iPCloneParameters;
+    }
+
+    @JsonProperty("WebListeningServiceParameters")
+    public WebListeningServiceParameters getWebListeningServiceParameters() {
+        return webListeningServiceParameters;
+    }
+
+    @JsonProperty("WebListeningServiceParameters")
+    public void setWebListeningServiceParameters(WebListeningServiceParameters webListeningServiceParameters) {
+        this.webListeningServiceParameters = webListeningServiceParameters;
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
+
+    @JsonAnySetter
+    public void setAdditionalProperty(String name, Object value) {
+        this.additionalProperties.put(name, value);
+    }
+
+    @Override
+    public String toString() {
+        String myValue = "";
+
+        if (this.activeApplications != null) {
+            myValue = myValue + "\tFun: ActiveApplications: " + this.activeApplications + "\n";
+        }
+
+        if (this.tVDiscoveryParameters != null) {
+            myValue = myValue + "\tFun: TVDiscoveryParameters: " + this.tVDiscoveryParameters + "\n";
+        }
+
+        if (this.systemStatusParameters != null) {
+            myValue = myValue + "\tFun: SystemStatusParameters: " + this.systemStatusParameters + "\n";
+        }
+        if (this.iPCloneParameters != null) {
+            myValue = myValue + "\tFun: IPCloneParameters: " + this.iPCloneParameters + "\n";
+        }
+
+        if (this.cloneToServerParameters != null) {
+            myValue = myValue + "\tFun: CloneToServerParameters: " + this.cloneToServerParameters + "\n";
+        }
+
+        return myValue;
+    }
 
 }
