@@ -67,7 +67,7 @@ public class CloneItemDetails {
 
     @Override
     public String toString() {
-        String myValue = "\n\t\t\t{CloneItemName: " + this.cloneItemName + ", CloneItemVersionNo: " + this.cloneItemVersionNo + "}\n";
+        String myValue = "{CloneItemName: " + this.cloneItemName + ", CloneItemVersionNo: " + this.cloneItemVersionNo + "}\n";
         return myValue;
     }
 }

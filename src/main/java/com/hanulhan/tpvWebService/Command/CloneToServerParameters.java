@@ -28,7 +28,7 @@ import java.util.Map;
 public class CloneToServerParameters {
 
     @JsonProperty("CloneItemsAvailableToServer")
-    private List<CloneItemsAvailableToServer> cloneItemsAvailableToServer = null;
+    private List<CloneItemDetails> cloneItemsAvailableToServer = null;
     @JsonProperty("CloneToServerSessionStatus")
     private CloneToServerSessionStatus cloneToServerSessionStatus;
     @JsonProperty("CloneToServerStatus")
@@ -37,12 +37,12 @@ public class CloneToServerParameters {
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonProperty("CloneItemsAvailableToServer")
-    public List<CloneItemsAvailableToServer> getCloneItemsAvailableToServer() {
+    public List<CloneItemDetails> getCloneItemsAvailableToServer() {
         return cloneItemsAvailableToServer;
     }
 
     @JsonProperty("CloneItemsAvailableToServer")
-    public void setCloneItemsAvailableToServer(List<CloneItemsAvailableToServer> cloneItemsAvailableToServer) {
+    public void setCloneItemsAvailableToServer(List<CloneItemDetails> cloneItemsAvailableToServer) {
         this.cloneItemsAvailableToServer = cloneItemsAvailableToServer;
     }
 

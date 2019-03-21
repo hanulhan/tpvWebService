@@ -7,51 +7,36 @@ package com.hanulhan.tpvWebService.Command;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.annotation.JsonSetter;
 import java.util.HashMap;
 import java.util.Map;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "CloneItemDetails",
-    "CloneStatus"
-})
 /**
  *
  * @author uhansen
  */
-public class CloneItemStatus {
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonPropertyOrder({
+    "CustomDashboardServerURL"
+})
+public class ProfessionalSettingsParameters {
 
-    @JsonProperty("CloneItemDetails")
-    private CloneItemDetails cloneItemDetails;
-    @JsonProperty("CloneStatus")
-    private String cloneStatus;
+    @JsonProperty("CustomDashboardServerURL")
+    private String customDashboardServerURL;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-    @JsonGetter("CloneItemDetails")
-    public CloneItemDetails getCloneItemDetails() {
-        return cloneItemDetails;
+    @JsonProperty("CustomDashboardServerURL")
+    public String getCustomDashboardServerURL() {
+        return customDashboardServerURL;
     }
 
-    @JsonSetter("CloneItemDetails")
-    public void setCloneItemDetails(CloneItemDetails cloneItemDetails) {
-        this.cloneItemDetails = cloneItemDetails;
-    }
-
-    @JsonGetter("CloneStatus")
-    public String getCloneStatus() {
-        return cloneStatus;
-    }
-
-    @JsonSetter("CloneStatus")
-    public void setCloneStatus(String cloneStatus) {
-        this.cloneStatus = cloneStatus;
+    @JsonProperty("CustomDashboardServerURL")
+    public void setCustomDashboardServerURL(String customDashboardServerURL) {
+        this.customDashboardServerURL = customDashboardServerURL;
     }
 
     @JsonAnyGetter
@@ -67,8 +52,7 @@ public class CloneItemStatus {
     @Override
     public String toString() {
         String myValue = "\n";
-        myValue = myValue + "\t\t\t\tCloneItemDetails: " + this.cloneItemDetails;
-        myValue = myValue + "\t\t\t\tCloneStatus     : " + this.cloneStatus + "\n";
+        myValue = myValue + "\t\tcustomDashboardServerURL: " + this.customDashboardServerURL + "\n";
         return myValue;
     }
 }

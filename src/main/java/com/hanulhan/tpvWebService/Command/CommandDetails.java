@@ -28,11 +28,15 @@ import java.util.Map;
     "WebListeningServiceParameters",
     "TVDiscoveryParameters",
     "CloneToServerParameters",
-    "IPCloneParameters"})
+    "IPCloneParameters",
+    "ProfessionalSettingsParameters"})
 public class CommandDetails {
 
     @JsonProperty("WebServiceParameters")
     private WebServiceParameters webServiceParameters;
+
+    @JsonProperty("ProfessionalSettingsParameters")
+    private ProfessionalSettingsParameters professionalSettingsParameters;
 
     @JsonProperty("WebListeningServiceParameters")
     private WebListeningServiceParameters webListeningServiceParameters;
@@ -54,6 +58,16 @@ public class CommandDetails {
 
     @JsonIgnore
     private final Map<String, Object> additionalProperties = new HashMap<String, Object>();
+
+    @JsonProperty("ProfessionalSettingsParameters")
+    public ProfessionalSettingsParameters getProfessionalSettingsParameters() {
+        return professionalSettingsParameters;
+    }
+
+    @JsonProperty("ProfessionalSettingsParameters")
+    public void setProfessionalSettingsParameters(ProfessionalSettingsParameters professionalSettingsParameters) {
+        this.professionalSettingsParameters = professionalSettingsParameters;
+    }
 
     @JsonGetter("ActiveApplications")
     public List<ActiveApplications> getActiveApplications() {
@@ -138,24 +152,33 @@ public class CommandDetails {
     @Override
     public String toString() {
         String myValue = "";
+        Boolean fData = false;
 
         if (this.activeApplications != null) {
             myValue = myValue + "\tFun: ActiveApplications: " + this.activeApplications + "\n";
+            fData = true;
         }
 
         if (this.tVDiscoveryParameters != null) {
             myValue = myValue + "\tFun: TVDiscoveryParameters: " + this.tVDiscoveryParameters + "\n";
+            fData = true;
         }
 
         if (this.systemStatusParameters != null) {
             myValue = myValue + "\tFun: SystemStatusParameters: " + this.systemStatusParameters + "\n";
+            fData = true;
         }
         if (this.iPCloneParameters != null) {
             myValue = myValue + "\tFun: IPCloneParameters: " + this.iPCloneParameters + "\n";
+            fData = true;
         }
 
         if (this.cloneToServerParameters != null) {
             myValue = myValue + "\tFun: CloneToServerParameters: " + this.cloneToServerParameters + "\n";
+            fData = true;
+        }
+        if (fData == false) {
+            myValue = myValue + "\tUnknown Command";
         }
 
         return myValue;
