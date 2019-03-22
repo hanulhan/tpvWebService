@@ -2,7 +2,6 @@ package com.hanulhan.tpvWebService.service;
 
 import com.hanulhan.tpvWebService.exception.FileStorageException;
 import com.hanulhan.tpvWebService.exception.MyFileNotFoundException;
-import com.hanulhan.tpvWebService.property.FileStorageProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;

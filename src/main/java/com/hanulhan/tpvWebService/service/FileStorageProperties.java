@@ -1,4 +1,4 @@
-package com.hanulhan.tpvWebService.property;
+package com.hanulhan.tpvWebService.service;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

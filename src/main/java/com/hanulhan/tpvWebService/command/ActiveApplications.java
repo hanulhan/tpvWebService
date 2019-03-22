@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.hanulhan.tpvWebService.Command;
+package com.hanulhan.tpvWebService.command;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -14,29 +14,30 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.util.HashMap;
 import java.util.Map;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonPropertyOrder({
+    "ApplicationName"
+})
+
 /**
  *
  * @author uhansen
  */
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "CustomDashboardServerURL"
-})
-public class ProfessionalSettingsParameters {
+public class ActiveApplications {
 
-    @JsonProperty("CustomDashboardServerURL")
-    private String customDashboardServerURL;
+    @JsonProperty("ApplicationName")
+    private String applicationName;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private final Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-    @JsonProperty("CustomDashboardServerURL")
-    public String getCustomDashboardServerURL() {
-        return customDashboardServerURL;
+    @JsonProperty("ApplicationName")
+    public String getApplicationName() {
+        return applicationName;
     }
 
-    @JsonProperty("CustomDashboardServerURL")
-    public void setCustomDashboardServerURL(String customDashboardServerURL) {
-        this.customDashboardServerURL = customDashboardServerURL;
+    @JsonProperty("ApplicationName")
+    public void setApplicationName(String applicationName) {
+        this.applicationName = applicationName;
     }
 
     @JsonAnyGetter
@@ -51,8 +52,8 @@ public class ProfessionalSettingsParameters {
 
     @Override
     public String toString() {
-        String myValue = "\n";
-        myValue = myValue + "\t\tcustomDashboardServerURL: " + this.customDashboardServerURL + "\n";
-        return myValue;
+        return "\n\t\tApplicationName=" + applicationName;
     }
+    
+    
 }

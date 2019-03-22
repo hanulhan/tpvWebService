@@ -1,6 +1,6 @@
 package com.hanulhan.tpvWebService;
 
-import com.hanulhan.tpvWebService.property.FileStorageProperties;
+import com.hanulhan.tpvWebService.service.FileStorageProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

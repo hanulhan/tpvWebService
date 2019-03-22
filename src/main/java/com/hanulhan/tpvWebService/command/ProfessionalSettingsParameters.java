@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.hanulhan.tpvWebService.Command;
+package com.hanulhan.tpvWebService.command;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -14,30 +14,29 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.util.HashMap;
 import java.util.Map;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "ApplicationName"
-})
-
 /**
  *
  * @author uhansen
  */
-public class ActiveApplications {
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonPropertyOrder({
+    "CustomDashboardServerURL"
+})
+public class ProfessionalSettingsParameters {
 
-    @JsonProperty("ApplicationName")
-    private String applicationName;
+    @JsonProperty("CustomDashboardServerURL")
+    private String customDashboardServerURL;
     @JsonIgnore
-    private final Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-    @JsonProperty("ApplicationName")
-    public String getApplicationName() {
-        return applicationName;
+    @JsonProperty("CustomDashboardServerURL")
+    public String getCustomDashboardServerURL() {
+        return customDashboardServerURL;
     }
 
-    @JsonProperty("ApplicationName")
-    public void setApplicationName(String applicationName) {
-        this.applicationName = applicationName;
+    @JsonProperty("CustomDashboardServerURL")
+    public void setCustomDashboardServerURL(String customDashboardServerURL) {
+        this.customDashboardServerURL = customDashboardServerURL;
     }
 
     @JsonAnyGetter
@@ -52,8 +51,8 @@ public class ActiveApplications {
 
     @Override
     public String toString() {
-        return "\n\t\tApplicationName=" + applicationName;
+        String myValue = "\n";
+        myValue = myValue + "\t\tcustomDashboardServerURL: " + this.customDashboardServerURL + "\n";
+        return myValue;
     }
-    
-    
 }

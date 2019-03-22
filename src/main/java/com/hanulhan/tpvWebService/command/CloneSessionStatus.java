@@ -3,21 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.hanulhan.tpvWebService.Command;
+package com.hanulhan.tpvWebService.command;
 
-/**
- *
- * @author uhansen
- */
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.JsonSetter;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -27,7 +25,11 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "SessionStatus"
 })
 
-public class CloneToServerSessionStatus {
+/**
+ *
+ * @author uhansen
+ */
+public class CloneSessionStatus {
 
     @JsonProperty("CloneItemStatus")
     private List<CloneItemStatus> cloneItemStatus = null;
@@ -40,42 +42,42 @@ public class CloneToServerSessionStatus {
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-    @JsonProperty("CloneItemStatus")
+    @JsonGetter("CloneItemStatus")
     public List<CloneItemStatus> getCloneItemStatus() {
         return cloneItemStatus;
     }
 
-    @JsonProperty("CloneItemStatus")
+    @JsonSetter("CloneItemStatus")
     public void setCloneItemStatus(List<CloneItemStatus> cloneItemStatus) {
         this.cloneItemStatus = cloneItemStatus;
     }
 
-    @JsonProperty("SessionEndTime")
+    @JsonGetter("SessionEndTime")
     public String getSessionEndTime() {
         return sessionEndTime;
     }
 
-    @JsonProperty("SessionEndTime")
+    @JsonSetter("SessionEndTime")
     public void setSessionEndTime(String sessionEndTime) {
         this.sessionEndTime = sessionEndTime;
     }
 
-    @JsonProperty("SessionStartTime")
+    @JsonGetter("SessionStartTime")
     public String getSessionStartTime() {
         return sessionStartTime;
     }
 
-    @JsonProperty("SessionStartTime")
+    @JsonSetter("SessionStartTime")
     public void setSessionStartTime(String sessionStartTime) {
         this.sessionStartTime = sessionStartTime;
     }
 
-    @JsonProperty("SessionStatus")
+    @JsonGetter("SessionStatus")
     public String getSessionStatus() {
         return sessionStatus;
     }
 
-    @JsonProperty("SessionStatus")
+    @JsonSetter("SessionStatus")
     public void setSessionStatus(String sessionStatus) {
         this.sessionStatus = sessionStatus;
     }
@@ -94,9 +96,12 @@ public class CloneToServerSessionStatus {
     public String toString() {
         String myValue = "\n";
         myValue = myValue + "\t\t\tsessionStatus: " + this.sessionStatus + "\n";
-        myValue = myValue + "\t\t\tSessionStartTime: " + this.sessionStartTime + "\n";
-        myValue = myValue + "\t\t\tSessionEndTime: " + this.sessionEndTime + "\n";
-        myValue = myValue + "\t\t\tCloneItemStatus: " + this.cloneItemStatus + "\n";
+        myValue = myValue + "\t\t\tsessionStartTime: " + this.sessionStartTime + "\n";
+        myValue = myValue + "\t\t\tsessionEndTime: " + this.sessionEndTime + "\n";
+        myValue = myValue + "\t\t\tcloneItemStatus: " + this.cloneItemStatus + "\n";
+        
         return myValue;
     }
+    
+    
 }
