@@ -10,6 +10,8 @@ import com.hanulhan.tpvWebService.response.MultipartResponse;
 import com.hanulhan.tpvWebService.response.MultipartResponseList;
 import com.hanulhan.tpvWebService.service.FileStorageService;
 import java.util.Date;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,10 +33,13 @@ public class TpvController {
 
     @Autowired
     FileStorageService fileStorageService;
+    
+    private static final Logger LOGGER = LogManager.getLogger(TpvController.class);
 
     @RequestMapping(value = "/register", method = RequestMethod.POST, consumes = "application/json")
     public void register(@RequestBody TpvCommand aCommand) {
-        System.out.println(aCommand);
+        LOGGER.debug(aCommand);
+        //System.out.println(aCommand);
     }
 
     @RequestMapping(value = "/register",
@@ -50,14 +55,16 @@ public class TpvController {
 
         if (roomSpecificSettings != null) {
             myFile = fileStorageService.storeFile(roomSpecificSettings);
-            System.out.println("Upload File: " + myFile);
+            //System.out.println("Upload File: " + myFile);
+            LOGGER.debug("Upload File: " + myFile);
             response = new MultipartResponse("SAVED", myFile, new Date());
             responseList.getResponseList().add(response);
         }
 
         if (tvSettings != null) {
             myFile = fileStorageService.storeFile(tvSettings);
-            System.out.println("Upload File: " + myFile);
+            //System.out.println("Upload File: " + myFile);
+            LOGGER.debug("Upload File: " + myFile);
             response = new MultipartResponse("SAVED", myFile, new Date());
             responseList.getResponseList().add(response);
         }
@@ -68,19 +75,20 @@ public class TpvController {
     @RequestMapping(value = "/register", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public String getCommand() {
-        System.out.println("Http Get");
+        
+        LOGGER.debug("Http Get");
         return "Received HTTP-GET";
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.DELETE)
     public String deleteCommand(@PathVariable("regdNum") String regdNum) {
-        System.out.println("Http Delete");
+        LOGGER.debug("Http Delete");
         return "Received HTTP-GET\n";
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.PUT)
     public String updateCommand(@RequestBody TpvCommand aCommand) {
-        System.out.println("Http put");
+        LOGGER.debug("Http put");
         return "Received HTTP-PUT";
     }
 }
