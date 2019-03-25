@@ -6,12 +6,15 @@
 package com.hanulhan.tpvWebService.controller;
 
 import com.hanulhan.tpvWebService.model.TvList;
-import com.hanulhan.tpvWebService.model.TvType;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  *
@@ -22,16 +25,19 @@ public class MainController {
 
     @Autowired
     TvList tvList;
+    private static final Logger LOGGER = LogManager.getLogger(MainController.class);
 
- 
     @RequestMapping(value = {"/", "/index"}, method = RequestMethod.GET)
-    public String index(Model model) {
-
+    public ModelAndView index() {
         String message = "Hello Spring Boot + JSP";
+        ModelAndView model = new ModelAndView("index");
+        //model.addAttribute("tvList", tvList.getTvList());
+        //model.addAttribute("message", message);
+        model.addObject("tvList", tvList.getTvList());
+        model.addObject("message", message);
+        return model;
 
-        model.addAttribute("message", message);
-
-        return "index";
+        //      return "index";
     }
 
     @RequestMapping(value = {"/tvList"}, method = RequestMethod.GET)
@@ -42,4 +48,14 @@ public class MainController {
         return "tvList";
     }
 
+    @RequestMapping(value = "/test", method = RequestMethod.POST)
+    public String handlePost(@RequestParam String action, Model m) {
+        if (action.equals("save")) {
+            LOGGER.debug("save action");
+        } else if (action.equals("renew")) {
+            LOGGER.debug("renew action");
+        }
+        //m.addAttribute("name", "change");
+        return "redirect:/index";
+    }
 }
