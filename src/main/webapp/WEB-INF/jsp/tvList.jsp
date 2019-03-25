@@ -16,6 +16,9 @@
                 <tr>
                     <th>First Name</th>
                     <th>Last Name</th>
+                    <th>IP Address</th>
+                    <th>Power state</th>
+                    <th>TV Model</th>
                 </tr>
                 <c:forEach  items="${tvList}" var ="tv">
                     <tr>

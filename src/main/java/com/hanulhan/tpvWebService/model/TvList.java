@@ -5,24 +5,28 @@
  */
 package com.hanulhan.tpvWebService.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author uli
  */
-@Component
-@Scope("singleton")
+@Service
 public class TvList {
-    private final Map<String, TvType> tvList= new HashMap<>();
 
-    public Map<String, TvType> getTvList() {
+    private static List<TvType> tvList = new ArrayList<>();
+
+    static {
+        tvList.add(new TvType("UniqueID-1", "2042", "192.168.178.31", "5011"));
+        tvList.add(new TvType("UniqueID-2", "2042", "192.168.178.32", "5011"));
+    }
+
+    public List<TvType> getTvList() {
         return tvList;
     }
-    
-    
-    
+
 }

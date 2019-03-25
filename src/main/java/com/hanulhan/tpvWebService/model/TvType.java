@@ -12,14 +12,14 @@ package com.hanulhan.tpvWebService.model;
 public class TvType {
     private String tvUniqueID;
     private String tvRoomID;
-    private String tvIpAddress;
+    private String tvIPAddress;
     private String powerStatus;
     private String tvModel;
 
     public TvType(String tvUniqueID, String tvRoomID, String tvIpAddress, String tvModel) {
         this.tvUniqueID = tvUniqueID;
         this.tvRoomID = tvRoomID;
-        this.tvIpAddress = tvIpAddress;
+        this.tvIPAddress = tvIpAddress;
         this.tvModel = tvModel;
     }
 
@@ -40,13 +40,14 @@ public class TvType {
         this.tvRoomID = tvRoomID;
     }
 
-    public String getTvIpAddress() {
-        return tvIpAddress;
+    public String getTvIPAddress() {
+        return tvIPAddress;
     }
 
-    public void setTvIpAddress(String tvIpAddress) {
-        this.tvIpAddress = tvIpAddress;
+    public void setTvIPAddress(String tvIPAddress) {
+        this.tvIPAddress = tvIPAddress;
     }
+
 
     public String getPowerStatus() {
         return powerStatus;

@@ -7,6 +7,7 @@ package com.hanulhan.tpvWebService.controller;
 
 import com.hanulhan.tpvWebService.model.TvList;
 import com.hanulhan.tpvWebService.model.TvType;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,13 +20,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class MainController {
 
-    private static TvList tvList;
+    @Autowired
+    TvList tvList;
 
-    static {
-        tvList.getTvList().put("UniqueID-1", new TvType("UniqueID-1", "2042", "192.168.178.31", "5011"));
-        tvList.getTvList().put("UniqueID-2", new TvType("UniqueID-2", "2042", "192.168.178.32", "5011"));
-    }
-
+ 
     @RequestMapping(value = {"/", "/index"}, method = RequestMethod.GET)
     public String index(Model model) {
 
@@ -39,7 +37,7 @@ public class MainController {
     @RequestMapping(value = {"/tvList"}, method = RequestMethod.GET)
     public String viewPersonList(Model model) {
 
-        model.addAttribute("persons", tvList);
+        model.addAttribute("tvList", tvList.getTvList());
 
         return "tvList";
     }
