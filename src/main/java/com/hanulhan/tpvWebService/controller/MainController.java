@@ -6,9 +6,14 @@
 package com.hanulhan.tpvWebService.controller;
 
 import com.hanulhan.tpvWebService.model.TvList;
+import com.hanulhan.tpvWebService.model.TvType;
+import com.hanulhan.tpvWebService.response.MultipartResponseList;
+import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -57,5 +62,10 @@ public class MainController {
         }
         //m.addAttribute("name", "change");
         return "redirect:/index";
+    }
+    
+    @RequestMapping(value = "/getTvList", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity<List<TvType>> getTvList() {
+        return new ResponseEntity<>(tvList.getTvList(), HttpStatus.OK);
     }
 }

@@ -11,39 +11,32 @@
         <link href="css/layout.css" rel="stylesheet" />
         <script src="webjars/bootstrap/4.0.0/js/bootstrap.min.js"></script>
         <script src="webjars/jquery/3.0.0/jquery.min.js"></script>
+        
+        <style>
+            th, td, p, input {
+                font: 14px Verdana;
+            }
+            table, th, td {
+                border: solid 1px #DDD;
+                border-collapse: collapse;
+                padding: 2px 3px;
+                text-aligh: center
+            }
+            th {
+                font-weight: bold;
+            }
+        </style>
+        
     </head>
     <body>
         <h1>Philips TV</h1>
         <h2>${message}</h2>
 
-
-        <!--   
-        <a href="${pageContext.request.contextPath}/tvList">TV List</a>  
-        -->
-
-        <button value="Refresh Page" onClick="window.location.reload()">Refresh</button>
+        <button value="Refresh Page" onClick="showTable()">Refresh</button>
         <br>
         <br>
 
-        <div>
-            <table border="1">
-                <tr>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>IP Address</th>
-                    <th>Power state</th>
-                    <th>TV Model</th>
-                </tr>
-                <c:forEach  items="${tvList}" var ="tv">
-                    <tr>
-                        <td>${tv.tvUniqueID}</td>
-                        <td>${tv.tvRoomID}</td>
-                        <td>${tv.tvIPAddress}</td>
-                        <td>${tv.powerStatus}</td>
-                        <td>${tv.tvModel}</td>
-                    </tr>
-                </c:forEach>
-            </table>
+        <div id = "idTableDiv">
         </div>
 
     </div>
@@ -64,19 +57,86 @@
 </body>
 <script type="text/javascript">
     var sDateFormat = "<s:text name='global.dateformat.long'/>";
+    var tableData;
 
     $(document).ready(function () {
-       console.log("document.ready()");
-       var el= document.getElementById('selTV');
-       <c:forEach  items="${tvList}" var ="tv">
-          var opt= document.createElement('option');
-          opt.innerHTML= "${tv.tvUniqueID}";
-          opt.value= "${tv.tvUniqueID}";
-          selTV.appendChild(opt);
-       </c:forEach>        
-        
-        
+        console.log("document.ready()");
+
+        showTable();
+
+        var el = document.getElementById('selTV');
+
+        <c:forEach  items="${tvList}" var ="tv">
+            var opt = document.createElement('option');
+            opt.innerHTML = "${tv.tvUniqueID}";
+            opt.value = "${tv.tvUniqueID}";
+            selTV.appendChild(opt);
+        </c:forEach>
+
+
+
     });
+
+
+
+
+    function showTable()    {
+
+        $.ajax({
+            type: "POST",
+            url: "/getTvList",
+            dataType: 'json',
+            success: function (data) {
+                drawTable("idTableDiv", data);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log("error", textStatus, errorThrown);
+            }
+        });
+
+
+    };
+    
+    function drawTable(container, data) {
+
+        // EXTRACT VALUE FOR HTML HEADER. 
+        var col = [];
+        for (var i = 0; i < data.length; i++) {
+            for (var key in data[i]) {
+                if (col.indexOf(key) === -1) {
+                    col.push(key);
+                }
+            }
+        }
+
+        // CREATE DYNAMIC TABLE.
+        var table = document.createElement("table");
+
+        // CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE.
+
+        var tr = table.insertRow(-1);                   // TABLE ROW.
+
+        for (var i = 0; i < col.length; i++) {
+            var th = document.createElement("th");      // TABLE HEADER.
+            th.innerHTML = col[i];
+            tr.appendChild(th);
+        }
+
+        // ADD JSON DATA TO THE TABLE AS ROWS.
+        for (var i = 0; i < data.length; i++) {
+
+            tr = table.insertRow(-1);
+
+            for (var j = 0; j < col.length; j++) {
+                var tabCell = tr.insertCell(-1);
+                tabCell.innerHTML = data[i][col[j]];
+            }
+        }
+
+        // FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
+        document.getElementById(container).innerHTML = "";
+        document.getElementById(container).appendChild(table);
+    };
 </script>
 
 </html>
