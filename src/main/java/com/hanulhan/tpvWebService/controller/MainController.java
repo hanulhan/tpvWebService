@@ -9,39 +9,31 @@ import com.hanulhan.tpvWebService.command.TpvCommand;
 import com.hanulhan.tpvWebService.model.TvAction;
 import com.hanulhan.tpvWebService.model.TvList;
 import com.hanulhan.tpvWebService.model.TvType;
-import com.hanulhan.tpvWebService.response.MultipartResponseList;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
-import java.util.logging.Level;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.eclipse.persistence.jaxb.MarshallerProperties;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.http.HttpStatus;
-import static org.springframework.http.HttpStatus.CREATED;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -53,11 +45,13 @@ public class MainController {
 
     @Autowired
     TvList tvList;
+
     private static final Logger LOGGER = LogManager.getLogger(MainController.class);
 
     @RequestMapping(value = {"/", "/index"}, method = RequestMethod.GET)
     public ModelAndView index() {
         String message = "Hello Spring Boot + JSP";
+
         ModelAndView model = new ModelAndView("index");
         //model.addAttribute("tvList", tvList.getTvList());
         //model.addAttribute("message", message);
@@ -91,14 +85,21 @@ public class MainController {
         LOGGER.debug("request IP Upgrade for " + tvAction.getTvUniqueId());
 
         TpvCommand myCommand = new TpvCommand("Request", 7, "IPCloneService", "WebListeningServices", "3.0");
-        String myIp = TvList.getTvList().get(tvAction.getTvUniqueId()).getTvIPAddress();
+        String myIp = tvList.getTvList().get(tvAction.getTvUniqueId()).getTvIPAddress();
 
         StringWriter writer = new StringWriter();
-        
+
         CloseableHttpClient httpClient = HttpClients.createDefault();
         try {
             JAXBContext jaxbContext = JAXBContext.newInstance(TpvCommand.class);
             Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+            // Set the Marshaller media type to JSON or XML
+            jaxbMarshaller.setProperty(MarshallerProperties.MEDIA_TYPE, "application/json");
+            // Set it to true if you need to include the JSON root element in the JSON output
+            jaxbMarshaller.setProperty(MarshallerProperties.JSON_INCLUDE_ROOT, true);
+            // Set it to true if you need the JSON output to formatted
+            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
             jaxbMarshaller.marshal(myCommand, writer);
         } catch (JAXBException ex) {
             LOGGER.error(ex);
@@ -125,7 +126,7 @@ public class MainController {
             LOGGER.error(ex);
         } finally {
             //Important: Close the connect
-            if (response2 != null)  {
+            if (response2 != null) {
                 response2.close();
             }
         }

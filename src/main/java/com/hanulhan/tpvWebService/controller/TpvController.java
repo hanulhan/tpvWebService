@@ -5,7 +5,10 @@
  */
 package com.hanulhan.tpvWebService.controller;
 
+import com.hanulhan.tpvWebService.command.CommandDetails;
 import com.hanulhan.tpvWebService.command.TpvCommand;
+import com.hanulhan.tpvWebService.model.TvList;
+import com.hanulhan.tpvWebService.model.TvType;
 import com.hanulhan.tpvWebService.response.MultipartResponse;
 import com.hanulhan.tpvWebService.response.MultipartResponseList;
 import com.hanulhan.tpvWebService.service.FileStorageService;
@@ -33,12 +36,62 @@ public class TpvController {
 
     @Autowired
     FileStorageService fileStorageService;
-    
+
+    @Autowired
+    TvList tvList;
+
     private static final Logger LOGGER = LogManager.getLogger(TpvController.class);
 
     @RequestMapping(value = "/register", method = RequestMethod.POST, consumes = "application/json")
     public void register(@RequestBody TpvCommand aCommand) {
+        String myUniqueId = null;
         LOGGER.debug(aCommand);
+        CommandDetails myDetails = aCommand.getCommandDetails();
+        TvType myTv = null;
+        Boolean fStatusChanged = false;
+
+        if (myDetails.getWebServiceParameters() != null) {
+            myUniqueId = myDetails.getWebServiceParameters().getTVUniqueID();
+            myTv = new TvType(myUniqueId);
+        }
+
+        if (myDetails.gettVDiscoveryParameters() != null && myTv != null) {
+            myTv.setPowerStatus(myDetails.gettVDiscoveryParameters().getPowerStatus());
+            myTv.setTvIPAddress(myDetails.gettVDiscoveryParameters().getTVIPAddress());
+            myTv.setTvModel(myDetails.gettVDiscoveryParameters().getTVModelNumber());
+            myTv.setTvRoomID(myDetails.gettVDiscoveryParameters().getTVRoomID());
+            fStatusChanged = true;
+        }
+        if (myDetails.getCloneToServerParameters() != null && myTv != null) {
+            myTv.setCloneToServerStatus(myDetails.getCloneToServerParameters().getCloneToServerStatus());
+            myTv.setCloneToServerSessionStatus(myDetails.getCloneToServerParameters().getCloneToServerSessionStatus().getSessionStatus());
+            fStatusChanged = true;
+        }
+
+        if (myDetails.getiPCloneParameters() != null && myTv != null) {
+            myTv.setUpgradeStatus(myDetails.getiPCloneParameters().getCurrentUpgradeStatus());
+            myTv.setUpgradeStatus(myDetails.getiPCloneParameters().getCloneSessionStatus().getSessionStatus());
+            fStatusChanged = true;
+        }
+
+        if (myUniqueId != null && fStatusChanged) {
+
+            if (!tvList.getTvList().containsKey(myUniqueId)) {
+                LOGGER.debug("Add TV " + myUniqueId + "to Repository");
+                tvList.getTvList().put(myUniqueId, myTv);
+            } else {
+                TvType tvInMap= tvList.getTvList().get(myUniqueId);
+                tvInMap.setCloneToServerStatus(myTv.getCloneToServerStatus());
+                tvInMap.setCloneToServerSessionStatus(myTv.getCloneToServerSessionStatus());
+                tvInMap.setUpgradeStatus(myTv.getUpgradeStatus());
+                tvInMap.setUpgradeSessionStatus(myTv.getUpgradeSessionStatus());
+                
+                tvList.getTvList().put(myUniqueId, tvInMap);
+            }
+        } else {
+            LOGGER.debug("UniqueID is null");
+        }
+
         //System.out.println(aCommand);
     }
 
@@ -50,7 +103,7 @@ public class TpvController {
             @RequestPart(value = "TVSettings", required = false) MultipartFile tvSettings) {
 
         String myFile;
-        MultipartResponseList responseList= new MultipartResponseList();
+        MultipartResponseList responseList = new MultipartResponseList();
         MultipartResponse response;
 
         if (roomSpecificSettings != null) {
@@ -71,11 +124,10 @@ public class TpvController {
         return new ResponseEntity<>(responseList, HttpStatus.OK);
     }
 
-
     @RequestMapping(value = "/register", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public String getCommand() {
-        
+
         LOGGER.debug("Http Get");
         return "Received HTTP-GET";
     }

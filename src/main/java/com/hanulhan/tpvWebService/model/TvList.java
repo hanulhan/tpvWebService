@@ -11,21 +11,26 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author uli
  */
 @Component
+@Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
 public class TvList {
 
-    private static Map<String, TvType> tvList = new HashMap<>();
+    private Map<String, TvType> tvList = new HashMap<>();
+    private static int instances= 0;
 
-    static {
-        tvList.put("UniqueID-1", new TvType("UniqueID-1", "2042", "192.168.178.31", "5011"));
-        tvList.put("UniqueID-2", new TvType("UniqueID-2", "2042", "192.168.178.32", "5011"));
+    public TvList() {
+        TvList.instances++;
     }
+
+    
 
     public List<TvType> getTvsAsList() {
         List<TvType> myList = new ArrayList<>();
@@ -42,13 +47,14 @@ public class TvList {
         return myList;
     }
 
-    public static Map<String, TvType> getTvList() {
+    public Map<String, TvType> getTvList() {
         return tvList;
     }
 
-    public static void setTvList(Map<String, TvType> tvList) {
-        TvList.tvList = tvList;
+    public void setTvList(Map<String, TvType> tvList) {
+        this.tvList = tvList;
     }
+
 
     
 }

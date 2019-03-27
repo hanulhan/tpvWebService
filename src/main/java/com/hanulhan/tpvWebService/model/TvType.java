@@ -10,12 +10,22 @@ package com.hanulhan.tpvWebService.model;
  * @author uli
  */
 public class TvType {
+
     private String tvUniqueID;
     private String tvRoomID;
     private String tvIPAddress;
     private String powerStatus;
     private String tvModel;
+    private String cloneToServerStatus;
+    private String cloneToServerSessionStatus;
 
+    private String upgradeStatus;
+    private String upgradeSessionStatus;
+
+    public TvType(String tvUniqueID) {
+        this.tvUniqueID = tvUniqueID;
+    }
+    
     public TvType(String tvUniqueID, String tvRoomID, String tvIpAddress, String tvModel) {
         this.tvUniqueID = tvUniqueID;
         this.tvRoomID = tvRoomID;
@@ -23,7 +33,6 @@ public class TvType {
         this.tvModel = tvModel;
     }
 
-    
     public String getTvUniqueID() {
         return tvUniqueID;
     }
@@ -48,7 +57,6 @@ public class TvType {
         this.tvIPAddress = tvIPAddress;
     }
 
-
     public String getPowerStatus() {
         return powerStatus;
     }
@@ -64,5 +72,38 @@ public class TvType {
     public void setTvModel(String tvModel) {
         this.tvModel = tvModel;
     }
-    
+
+    public String getCloneToServerStatus() {
+        return cloneToServerStatus;
+    }
+
+    public void setCloneToServerStatus(String cloneToServerStatus) {
+        this.cloneToServerStatus = cloneToServerStatus;
+    }
+
+    public String getCloneToServerSessionStatus() {
+        return cloneToServerSessionStatus;
+    }
+
+    public void setCloneToServerSessionStatus(String cloneToServerSessionStatus) {
+        this.cloneToServerSessionStatus = cloneToServerSessionStatus;
+    }
+
+    public String getUpgradeStatus() {
+        return upgradeStatus;
+    }
+
+    public void setUpgradeStatus(String upgradeStatus) {
+        this.upgradeStatus = upgradeStatus;
+    }
+
+    public String getUpgradeSessionStatus() {
+        return upgradeSessionStatus;
+    }
+
+    public void setUpgradeSessionStatus(String upgradeSessionStatus) {
+        this.upgradeSessionStatus = upgradeSessionStatus;
+    }
+
+
 }
