@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
  *
  * @author uli
  */
-@Service
+@Component
 public class TvList {
 
     private static Map<String, TvType> tvList = new HashMap<>();
@@ -27,7 +27,7 @@ public class TvList {
         tvList.put("UniqueID-2", new TvType("UniqueID-2", "2042", "192.168.178.32", "5011"));
     }
 
-    public List<TvType> getTvList() {
+    public List<TvType> getTvsAsList() {
         List<TvType> myList = new ArrayList<>();
         Iterator myEntries;
         
@@ -42,4 +42,13 @@ public class TvList {
         return myList;
     }
 
+    public static Map<String, TvType> getTvList() {
+        return tvList;
+    }
+
+    public static void setTvList(Map<String, TvType> tvList) {
+        TvList.tvList = tvList;
+    }
+
+    
 }

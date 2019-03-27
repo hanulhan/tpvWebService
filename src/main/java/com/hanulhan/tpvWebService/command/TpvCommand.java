@@ -45,13 +45,18 @@ public class TpvCommand {
     @JsonProperty("CommandDetails")
     private CommandDetails commandDetails;
 
-    @JsonProperty("Test")
-    private String Test;
+    public TpvCommand(String cmdType, Integer cookie, String fun, String svc, String svcVer) {
+        this.cmdType = cmdType;
+        this.cookie = cookie;
+        this.fun = fun;
+        this.svc = svc;
+        this.svcVer = svcVer;
+    }
 
     @JsonIgnore
     private final Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-    //@JsonProperty("CmdType")
+    
     @JsonGetter("CmdType")
     public String getCmdType() {
         return cmdType;
@@ -121,16 +126,6 @@ public class TpvCommand {
     @JsonSetter("CommandDetails")
     public void setCommandDetails(CommandDetails commandDetails) {
         this.commandDetails = commandDetails;
-    }
-
-    @JsonGetter("Test")
-    public String getTest() {
-        return Test;
-    }
-
-    @JsonSetter("Test")
-    public void setTest(String Test) {
-        this.Test = Test;
     }
 
     @JsonAnyGetter

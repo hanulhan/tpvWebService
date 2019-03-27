@@ -11,7 +11,7 @@
         <link href="css/layout.css" rel="stylesheet" />
         <script src="webjars/bootstrap/4.0.0/js/bootstrap.min.js"></script>
         <script src="webjars/jquery/3.0.0/jquery.min.js"></script>
-        
+
         <style>
             th, td, p, input {
                 font: 14px Verdana;
@@ -26,7 +26,7 @@
                 font-weight: bold;
             }
         </style>
-        
+
     </head>
     <body>
         <h1>Philips TV</h1>
@@ -48,10 +48,12 @@
     <br>
     <br>
 
-    <form action="<c:url value="/test" />" method="POST">
-        <input type="submit" name="action" value="save" />
+    <!--
+    <form id= "idForm" action="<c:url value="/requestIpUpgrade" />" method="POST">
+        <button id="idRequestUpUpgrade" name="selectedTv" value="">Request IP-Upgrade</button>
     </form>
-
+    -->
+    <button id="idRequestUpUpgrade" name="selectedTv" value="">Request IP-Upgrade</button>
 
 
 </body>
@@ -64,7 +66,7 @@
 
         showTable();
 
-        var el = document.getElementById('selTV');
+
 
         <c:forEach  items="${tvList}" var ="tv">
             var opt = document.createElement('option');
@@ -73,14 +75,46 @@
             selTV.appendChild(opt);
         </c:forEach>
 
+        /*
+        document.getElementById("selTV").addEventListener("change", function () {
+            var el = document.getElementById('selTV');
+            var selectedTv = el.options[el.selectedIndex].value;
 
+            var myInput = document.getElementById("idRequestUpUpgrade");
+            myInput.value= selectedTv;
+
+        });
+        */
+        
+        $('#idRequestUpUpgrade').on('click', function() {
+            var el = document.getElementById('selTV');
+            var data= {};
+            data["tvUniqueId"]= el.options[el.selectedIndex].value;
+            data["function"]= "IPCloneService";
+            data["CmdType"]= "Reqeust";
+            $.ajax({
+                type: "POST",
+                url: "/requestIpUpgrade",
+                data: JSON.stringify(data),
+                contentType: "application/json",
+                
+                success: function(result) {
+                   console.log("Form transfered");
+                   // Do something with the response.
+                   // Might want to check for errors here.
+               }, error: function(error) {
+                   console.log("transfer error");
+                   // Here you can handle exceptions thrown by the server or your controller.
+               }
+            });
+         });
 
     });
 
 
 
 
-    function showTable()    {
+    function showTable() {
 
         $.ajax({
             type: "POST",
@@ -95,8 +129,9 @@
         });
 
 
-    };
-    
+    }
+    ;
+
     function drawTable(container, data) {
 
         // EXTRACT VALUE FOR HTML HEADER. 
@@ -136,7 +171,8 @@
         // FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
         document.getElementById(container).innerHTML = "";
         document.getElementById(container).appendChild(table);
-    };
+    }
+    ;
 </script>
 
 </html>
