@@ -12,11 +12,16 @@ import com.hanulhan.tpvWebService.model.TvType;
 import com.hanulhan.tpvWebService.response.MultipartResponse;
 import com.hanulhan.tpvWebService.response.MultipartResponseList;
 import com.hanulhan.tpvWebService.service.FileStorageService;
+import java.io.IOException;
 import java.util.Date;
+import javax.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -41,58 +46,13 @@ public class TpvController {
     TvList tvList;
 
     private static final Logger LOGGER = LogManager.getLogger(TpvController.class);
+    private static final Logger LOGGER_TV = LogManager.getLogger("TV");
 
     @RequestMapping(value = "/register", method = RequestMethod.POST, consumes = "application/json")
     public void register(@RequestBody TpvCommand aCommand) {
         String myUniqueId = null;
-        LOGGER.debug(aCommand);
-        CommandDetails myDetails = aCommand.getCommandDetails();
-        TvType myTv = null;
-        Boolean fStatusChanged = false;
-
-        if (myDetails.getWebServiceParameters() != null) {
-            myUniqueId = myDetails.getWebServiceParameters().getTVUniqueID();
-            myTv = new TvType(myUniqueId);
-        }
-
-        if (myDetails.gettVDiscoveryParameters() != null && myTv != null) {
-            myTv.setPowerStatus(myDetails.gettVDiscoveryParameters().getPowerStatus());
-            myTv.setTvIPAddress(myDetails.gettVDiscoveryParameters().getTVIPAddress());
-            myTv.setTvModel(myDetails.gettVDiscoveryParameters().getTVModelNumber());
-            myTv.setTvRoomID(myDetails.gettVDiscoveryParameters().getTVRoomID());
-            fStatusChanged = true;
-        }
-        if (myDetails.getCloneToServerParameters() != null && myTv != null) {
-            myTv.setCloneToServerStatus(myDetails.getCloneToServerParameters().getCloneToServerStatus());
-            myTv.setCloneToServerSessionStatus(myDetails.getCloneToServerParameters().getCloneToServerSessionStatus().getSessionStatus());
-            fStatusChanged = true;
-        }
-
-        if (myDetails.getiPCloneParameters() != null && myTv != null) {
-            myTv.setUpgradeStatus(myDetails.getiPCloneParameters().getCurrentUpgradeStatus());
-            myTv.setUpgradeStatus(myDetails.getiPCloneParameters().getCloneSessionStatus().getSessionStatus());
-            fStatusChanged = true;
-        }
-
-        if (myUniqueId != null && fStatusChanged) {
-
-            if (!tvList.getTvList().containsKey(myUniqueId)) {
-                LOGGER.debug("Add TV " + myUniqueId + "to Repository");
-                tvList.getTvList().put(myUniqueId, myTv);
-            } else {
-                TvType tvInMap= tvList.getTvList().get(myUniqueId);
-                tvInMap.setCloneToServerStatus(myTv.getCloneToServerStatus());
-                tvInMap.setCloneToServerSessionStatus(myTv.getCloneToServerSessionStatus());
-                tvInMap.setUpgradeStatus(myTv.getUpgradeStatus());
-                tvInMap.setUpgradeSessionStatus(myTv.getUpgradeSessionStatus());
-                
-                tvList.getTvList().put(myUniqueId, tvInMap);
-            }
-        } else {
-            LOGGER.debug("UniqueID is null");
-        }
-
-        //System.out.println(aCommand);
+        LOGGER_TV.debug(aCommand);
+        tvList.update(aCommand);
     }
 
     @RequestMapping(value = "/register",
@@ -124,12 +84,28 @@ public class TpvController {
         return new ResponseEntity<>(responseList, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/register", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
-    public String getCommand() {
+    @RequestMapping(value = "/download/{fileName:.+}", method = RequestMethod.GET)
+    public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request) {
 
-        LOGGER.debug("Http Get");
-        return "Received HTTP-GET";
+        // Load file as Resource
+        Resource resource = fileStorageService.loadFileAsResource(fileName);
+
+        // Try to determine file's content type
+        String contentType = null;
+        try {
+            contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
+        } catch (IOException ex) {
+            LOGGER.info("Could not determine file type.");
+        }
+
+        // Fallback to the default content type if type could not be determined
+        if (contentType == null) {
+            contentType = "application/octet-stream";
+        }
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                .body(resource);
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.DELETE)

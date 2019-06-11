@@ -136,17 +136,23 @@
     function drawTable(container, data) {
 
         selTV.innerHTML="";
-        
+        /*
         <c:forEach  items="${tvList}" var ="tv">
             var opt = document.createElement('option');
             opt.innerHTML = "${tv.tvUniqueID}";
             opt.value = "${tv.tvUniqueID}";
             selTV.appendChild(opt);
         </c:forEach>
-
+        */
         // EXTRACT VALUE FOR HTML HEADER. 
         var col = [];
+        var opt;
         for (var i = 0; i < data.length; i++) {
+            opt = document.createElement('option');
+            opt.innerHTML = data[i].tvUniqueID;
+            opt.value = data[i].tvUniqueID;
+            selTV.appendChild(opt);
+        
             for (var key in data[i]) {
                 if (col.indexOf(key) === -1) {
                     col.push(key);

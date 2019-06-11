@@ -25,6 +25,7 @@ public class IPCloneParameters {
     private CloneSessionStatus cloneSessionStatus;
     @JsonProperty("CurrentUpgradeStatus")
     private String currentUpgradeStatus;
+    
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 

@@ -5,6 +5,9 @@
  */
 package com.hanulhan.tpvWebService.controller;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
 import com.hanulhan.tpvWebService.command.TpvCommand;
 import com.hanulhan.tpvWebService.model.TvAction;
 import com.hanulhan.tpvWebService.model.TvList;
@@ -12,7 +15,9 @@ import com.hanulhan.tpvWebService.model.TvType;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -25,9 +30,12 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.eclipse.persistence.jaxb.JAXBContextFactory;
 import org.eclipse.persistence.jaxb.MarshallerProperties;
+import org.eclipse.persistence.jaxb.xmlmodel.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -87,23 +95,14 @@ public class MainController {
         TpvCommand myCommand = new TpvCommand("Request", 7, "IPCloneService", "WebListeningServices", "3.0");
         String myIp = tvList.getTvList().get(tvAction.getTvUniqueId()).getTvIPAddress();
 
-        StringWriter writer = new StringWriter();
-
-        CloseableHttpClient httpClient = HttpClients.createDefault();
-        try {
-            JAXBContext jaxbContext = JAXBContext.newInstance(TpvCommand.class);
-            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-            // Set the Marshaller media type to JSON or XML
-            jaxbMarshaller.setProperty(MarshallerProperties.MEDIA_TYPE, "application/json");
-            // Set it to true if you need to include the JSON root element in the JSON output
-            jaxbMarshaller.setProperty(MarshallerProperties.JSON_INCLUDE_ROOT, true);
-            // Set it to true if you need the JSON output to formatted
-            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-
-            jaxbMarshaller.marshal(myCommand, writer);
-        } catch (JAXBException ex) {
-            LOGGER.error(ex);
+        if (myIp == null)   {
+            return new ResponseEntity<>("ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
         }
+        StringWriter writer = new StringWriter();
+        ObjectMapper mapper= new ObjectMapper();
+        mapper.registerModule(new JaxbAnnotationModule());
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        mapper.writeValue(writer, myCommand);
 
         //Define a postRequest request
         HttpPost postRequest = new HttpPost("http://" + myIp + ":9080/WIXP");
@@ -115,13 +114,17 @@ public class MainController {
         StringEntity commandEntity = new StringEntity(writer.getBuffer().toString());
         postRequest.setEntity(commandEntity);
         CloseableHttpResponse response2 = null;
-        HttpEntity entity1;
-
+        HttpEntity httpEntity;
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        TpvCommand myResponse;
         try {
             response2 = httpClient.execute(postRequest);
-            entity1 = response2.getEntity();
-            EntityUtils.consume(entity1);
-
+            httpEntity = response2.getEntity();
+            myResponse= mapper.readValue(httpEntity.getContent(), TpvCommand.class);
+            EntityUtils.consume(httpEntity);
+            LOGGER.debug(myResponse);
+            tvList.update(myResponse);
+            
         } catch (IOException ex) {
             LOGGER.error(ex);
         } finally {

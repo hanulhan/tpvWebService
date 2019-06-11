@@ -15,7 +15,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import java.util.HashMap;
 import java.util.Map;
-import javax.xml.bind.annotation.XmlRootElement;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -34,99 +33,95 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class TpvCommand {
 
     @JsonProperty("CmdType")
-    private String cmdType;
+    private String CmdType;
     @JsonProperty("Cookie")
-    private Integer cookie;
+    private Integer Cookie;
     @JsonProperty("Fun")
-    private String fun;
+    private String Fun;
     @JsonProperty("Svc")
-    private String svc;
+    private String Svc;
     @JsonProperty("SvcVer")
-    private String svcVer;
+    private String SvcVer;
     @JsonProperty("CommandDetails")
-    private CommandDetails commandDetails;
+    private CommandDetails CommandDetails;
 
     public TpvCommand(String cmdType, Integer cookie, String fun, String svc, String svcVer) {
-        this.cmdType = cmdType;
-        this.cookie = cookie;
-        this.fun = fun;
-        this.svc = svc;
-        this.svcVer = svcVer;
+        super();
+        this.CmdType = cmdType;
+        this.Cookie = cookie;
+        this.Fun = fun;
+        this.Svc = svc;
+        this.SvcVer = svcVer;
     }
 
+    public TpvCommand() {
+        super();
+    }
+
+    
     @JsonIgnore
     private final Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     
+   
     @JsonGetter("CmdType")
     public String getCmdType() {
-        return cmdType;
+        return CmdType;
     }
 
-    //@JsonProperty("CmdType")
     @JsonSetter("CmdType")
     public void setCmdType(String cmdType) {
-        this.cmdType = cmdType;
+        this.CmdType = cmdType;
     }
 
-    //@JsonProperty("Cookie")
     @JsonGetter("Cookie")
     public Integer getCookie() {
-        return cookie;
+        return Cookie;
     }
 
-    //@JsonProperty("Cookie")
     @JsonSetter("Cookie")
     public void setCookie(Integer cookie) {
-        this.cookie = cookie;
+        this.Cookie = cookie;
     }
 
-    //@JsonProperty("Fun")
     @JsonGetter("Fun")
     public String getFun() {
-        return fun;
+        return Fun;
     }
 
-    //@JsonProperty("Fun")
     @JsonSetter("Fun")
     public void setFun(String fun) {
-        this.fun = fun;
+        this.Fun = fun;
     }
 
-    //@JsonProperty("Svc")
     @JsonGetter("Svc")
     public String getSvc() {
-        return svc;
+        return Svc;
     }
 
-    //@JsonProperty("Svc")
     @JsonSetter("Svc")
     public void setSvc(String svc) {
-        this.svc = svc;
+        this.Svc = svc;
     }
 
-    //@JsonProperty("SvcVer")
     @JsonGetter("SvcVer")
     public String getSvcVer() {
-        return svcVer;
+        return SvcVer;
     }
 
-    //@JsonProperty("SvcVer")
     @JsonSetter("SvcVer")
     public void setSvcVer(String svcVer) {
-        this.svcVer = svcVer;
+        this.SvcVer = svcVer;
     }
 
-    //@JsonProperty("CommandDetails")
     @JsonGetter("CommandDetails")
     public CommandDetails getCommandDetails() {
-        return commandDetails;
+        return CommandDetails;
     }
 
-    //@JsonProperty("CommandDetails")
     @JsonSetter("CommandDetails")
     public void setCommandDetails(CommandDetails commandDetails) {
-        this.commandDetails = commandDetails;
+        this.CommandDetails = commandDetails;
     }
 
     @JsonAnyGetter
@@ -143,15 +138,15 @@ public class TpvCommand {
     public String toString() {
         String myValue = "";;
 
-        if (this.commandDetails.getWebServiceParameters() != null) {
-            myValue = " ####### TVUniqueID: " + this.commandDetails.getWebServiceParameters().getTVUniqueID() + "#######\n";
-        } else if (this.commandDetails.getWebListeningServiceParameters() != null) {
-            myValue = " ####### TVUniqueID: " + this.commandDetails.getWebListeningServiceParameters().getTVUniqueID() + "#######\n";
+        if (this.CommandDetails.getWebServiceParameters() != null) {
+            myValue = " ####### TVUniqueID: " + this.CommandDetails.getWebServiceParameters().getTVUniqueID() + "#######\n";
+        } else if (this.CommandDetails.getWebListeningServiceParameters() != null) {
+            myValue = " ####### TVUniqueID: " + this.CommandDetails.getWebListeningServiceParameters().getTVUniqueID() + "#######\n";
         }
-        myValue = myValue + "\tSvc   : " + this.svc + "\n";
-        myValue = myValue + "\tCookie: " + this.cookie + "\n";
+        myValue = myValue + "\tSvc   : " + this.Svc + "\n";
+        myValue = myValue + "\tCookie: " + this.Cookie + "\n";
 
-        myValue += this.commandDetails;
+        myValue += this.CommandDetails;
 
         return myValue;
     }

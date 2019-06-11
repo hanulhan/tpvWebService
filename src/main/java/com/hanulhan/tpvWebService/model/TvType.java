@@ -25,12 +25,39 @@ public class TvType {
     public TvType(String tvUniqueID) {
         this.tvUniqueID = tvUniqueID;
     }
-    
+
     public TvType(String tvUniqueID, String tvRoomID, String tvIpAddress, String tvModel) {
         this.tvUniqueID = tvUniqueID;
         this.tvRoomID = tvRoomID;
         this.tvIPAddress = tvIpAddress;
         this.tvModel = tvModel;
+    }
+
+    public void update(TvType aTv) {
+        if (aTv.powerStatus != null) {
+            this.powerStatus = aTv.getPowerStatus();
+        }
+        if (aTv.tvIPAddress != null) {
+            this.tvIPAddress = aTv.getTvIPAddress();
+        }
+        if (aTv.tvModel != null) {
+            this.tvModel = aTv.getTvModel();
+        }
+        if (aTv.tvRoomID != null) {
+            this.tvRoomID = aTv.getTvRoomID();
+        }
+        if (aTv.cloneToServerStatus != null) {
+            this.cloneToServerStatus = aTv.getCloneToServerStatus();
+        }
+        if (aTv.cloneToServerSessionStatus != null) {
+            this.cloneToServerSessionStatus = aTv.getCloneToServerSessionStatus();
+        }
+        if (aTv.upgradeStatus != null) {
+            this.upgradeStatus= aTv.getUpgradeStatus();
+        }
+        if (aTv.upgradeSessionStatus != null) {
+            this.upgradeSessionStatus= aTv.getUpgradeSessionStatus();
+        }
     }
 
     public String getTvUniqueID() {
@@ -104,6 +131,5 @@ public class TvType {
     public void setUpgradeSessionStatus(String upgradeSessionStatus) {
         this.upgradeSessionStatus = upgradeSessionStatus;
     }
-
 
 }
